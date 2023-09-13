@@ -1,8 +1,8 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import EventCalendar from './EventCalendar.jsx';
-import calendar from './calendar.json';
+import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import EventCalendar from "./EventCalendar.jsx";
+import calendar from "./calendar.json";
 
 function StorageRange({
   label,
@@ -111,31 +111,31 @@ function App() {
   const [isCheckedJsInjector, setIsCheckedJsInjector] = useState(false);
   const [isCheckedCssInjector, setIsCheckedCssInjector] = useState(false);
   // const [sliderValue, setSliderValue] = useState(0);
-  const [scriptJsTextValue, setScriptJsTextValue] = useState('');
-  const [scriptCssTextValue, setScriptCssTextValue] = useState('');
+  const [scriptJsTextValue, setScriptJsTextValue] = useState("");
+  const [scriptCssTextValue, setScriptCssTextValue] = useState("");
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('show');
+          entry.target.classList.add("show");
         } else {
-          entry.target.classList.remove('show');
+          entry.target.classList.remove("show");
         }
       });
     });
 
-    const hiddenElements = document.querySelectorAll('.hidden');
+    const hiddenElements = document.querySelectorAll(".hidden");
     hiddenElements.forEach((el) => observer.observe(el));
 
-    browser.storage.local.get('isCheckedJsInjector', function (result) {
+    browser.storage.local.get("isCheckedJsInjector", function (result) {
       const valueFromStorage = !!result.isCheckedJsInjector;
       if (valueFromStorage !== undefined) {
         setIsCheckedJsInjector(valueFromStorage);
       }
     });
 
-    browser.storage.local.get('isCheckedCssInjector', function (result) {
+    browser.storage.local.get("isCheckedCssInjector", function (result) {
       const valueFromStorage = !!result.isCheckedCssInjector;
       if (valueFromStorage !== undefined) {
         setIsCheckedCssInjector(valueFromStorage);
@@ -149,14 +149,14 @@ function App() {
     //   }
     // });
 
-    browser.storage.local.get('scriptJsTextValue', function (result) {
+    browser.storage.local.get("scriptJsTextValue", function (result) {
       const valueFromStorage = result.scriptJsTextValue;
       if (valueFromStorage !== undefined) {
         setScriptJsTextValue(valueFromStorage);
       }
     });
 
-    browser.storage.local.get('scriptCssTextValue', function (result) {
+    browser.storage.local.get("scriptCssTextValue", function (result) {
       const valueFromStorage = result.scriptCssTextValue;
       if (valueFromStorage !== undefined) {
         setScriptCssTextValue(valueFromStorage);
@@ -170,21 +170,21 @@ function App() {
   const [homeworkVisible, setHomeworkVisible] = useState(false);
 
   useEffect(() => {
-    browser.storage.local.get('linksVisible', function (result) {
+    browser.storage.local.get("linksVisible", function (result) {
       const valueFromStorage = !!result.linksVisible;
       if (valueFromStorage !== undefined) {
         setLinksVisible(valueFromStorage);
       }
     });
 
-    browser.storage.local.get('devtoolsVisible', function (result) {
+    browser.storage.local.get("devtoolsVisible", function (result) {
       const valueFromStorage = !!result.devtoolsVisible;
       if (valueFromStorage !== undefined) {
         setDevtoolsVisible(valueFromStorage);
       }
     });
 
-    browser.storage.local.get('homeworkVisible', function (result) {
+    browser.storage.local.get("homeworkVisible", function (result) {
       const valueFromStorage = !!result.homeworkVisible;
       if (valueFromStorage !== undefined) {
         setHomeworkVisible(valueFromStorage);
@@ -211,14 +211,14 @@ function App() {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        entry.target.classList.add('show');
+        entry.target.classList.add("show");
       } else {
-        entry.target.classList.remove('show');
+        entry.target.classList.remove("show");
       }
     });
   });
 
-  const hiddenElements = document.querySelectorAll('.hidden');
+  const hiddenElements = document.querySelectorAll(".hidden");
   hiddenElements.forEach((el) => observer.observe(el));
 
   const runAction = () => {
@@ -233,9 +233,9 @@ function App() {
               tabId: activeTab.id,
             },
             func: (textValue) => {
-              const tag_script = document.createElement('script');
+              const tag_script = document.createElement("script");
               tag_script.innerHTML = textValue;
-              document.getElementsByTagName('head')[0].appendChild(tag_script);
+              document.getElementsByTagName("head")[0].appendChild(tag_script);
             },
             args: [scriptJsTextValue],
             injectImmediately: true,
@@ -257,6 +257,25 @@ function App() {
       });
   };
 
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const formatTime = (time) => {
+    const hours = time.getHours();
+    const minutes = time.getMinutes();
+    const seconds = time.getSeconds();
+
+    const pad = (value) => (value < 10 ? `0${value}` : value);
+
+    return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+  };
+
   return (
     <>
       <div className="card my-4 hidden">
@@ -271,15 +290,18 @@ function App() {
           </div>
           <div className="col-8">
             <div className="card-body">
-              <h5 className="card-title">DAM Tools</h5>
-              <p className="card-text">{new Date().toLocaleString()}</p>
-              <p className="card-text">
+              <h4 className="card-title mt-2">DAM Tools</h4>
+              <div className="card-text mt-2">
+                Són les {formatTime(currentTime)}
+              </div>
+              <div className="card-text mt-1">
                 <small className="text-body-secondary me-3">
-                  Cret per LoXewyX
+                  Creat per LoXewyX
                 </small>
+                <div className="ms-2">
                 <a href="mailto:luis.ruiz@insbaixcamp.cat">
                   <img
-                    className="s20 me-2 unselectable"
+                    className="s20 me-3 unselectable"
                     draggable="false"
                     src="/img/envelope.svg"
                     alt="Gmail"
@@ -287,7 +309,7 @@ function App() {
                 </a>
                 <a href="https://github.com/LoXewyX/">
                   <img
-                    className="s20 me-2 unselectable"
+                    className="s20 me-3 unselectable"
                     draggable="false"
                     src="/img/github.svg"
                     alt="Github"
@@ -301,18 +323,19 @@ function App() {
                     alt="Bandcamp"
                   />
                 </a>
-              </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
       <div className="card p-4 mb-4 shadow-sm hidden">
         <h2 className="pointer draggable" onClick={toggleLinks}>
-          <div className={'caret-btn' + (linksVisible ? ' rotate-90' : '')}>
+          <div className={"caret-btn" + (linksVisible ? " rotate-90" : "")}>
             <div
               className="unselectable caret"
               draggable="false"
-              alt={linksVisible ? 'show' : 'hide'}
+              alt={linksVisible ? "show" : "hide"}
             />
           </div>
           Enllaços
@@ -348,11 +371,11 @@ function App() {
       </div>
       <div className="card p-4 mb-4 shadow-sm hidden">
         <h2 className="pointer draggable" onClick={toggleHomework}>
-          <div className={'caret-btn' + (homeworkVisible ? ' rotate-90' : '')}>
+          <div className={"caret-btn" + (homeworkVisible ? " rotate-90" : "")}>
             <div
               className="unselectable caret"
               draggable="false"
-              alt={homeworkVisible ? 'show' : 'hide'}
+              alt={homeworkVisible ? "show" : "hide"}
             />
           </div>
           Itinerari
@@ -368,14 +391,17 @@ function App() {
       </div>
       <div className="card p-4 mb-4 shadow-sm hidden">
         <h2 className="pointer draggable" onClick={toggleDevtools}>
-          <div className={'caret-btn' + (devtoolsVisible ? ' rotate-90' : '')}>
+          <div className={"caret-btn" + (devtoolsVisible ? " rotate-90" : "")}>
             <div
               className="unselectable caret"
               draggable="false"
-              alt={devtoolsVisible ? 'show' : 'hide'}
+              alt={devtoolsVisible ? "show" : "hide"}
             ></div>
           </div>
-          Eines <small className='ms-2' style={{fontSize: ".5em"}}>(Experimental)</small>
+          Eines{" "}
+          <small className="ms-2" style={{ fontSize: ".5em" }}>
+            (Experimental)
+          </small>
           <img
             className="s20 ms-2 unselectable"
             draggable="false"
