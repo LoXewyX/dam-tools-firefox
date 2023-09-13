@@ -1,6 +1,7 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = {
   entry: {
@@ -9,6 +10,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "./dist"),
     filename: "[name].js",
+    clean: true,
   },
   module: {
     rules: [
@@ -43,5 +45,20 @@ module.exports = {
   performance: {
     maxEntrypointSize: 512000,
     maxAssetSize: 512000,
+  },
+  optimization: {
+    minimizer: [
+      new TerserPlugin({
+        terserOptions: {
+          format: {
+            comments: false,
+          },
+          compress: {
+            drop_console: true,
+          },
+        },
+        extractComments: false,
+      }),
+    ],
   },
 };
