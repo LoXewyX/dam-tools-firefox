@@ -234,7 +234,7 @@ function App() {
             },
             func: (textValue) => {
               const tag_script = document.createElement("script");
-              tag_script.innerHTML = textValue;
+              tag_script.innerText = textValue;
               document.getElementsByTagName("head")[0].appendChild(tag_script);
             },
             args: [scriptJsTextValue],
