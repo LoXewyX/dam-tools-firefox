@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "DAM Tool",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Description of your extension",
   "permissions": ["storage", "scripting", "activeTab"],
   "browser_specific_settings": {
